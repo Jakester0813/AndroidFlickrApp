@@ -45,6 +45,11 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         }
     }
 
+    public void setList(ArrayList<Movie> pMovies){
+        mMovies.clear();
+        mMovies.addAll(pMovies);
+        this.notifyDataSetChanged();
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         // Lookup view for data population

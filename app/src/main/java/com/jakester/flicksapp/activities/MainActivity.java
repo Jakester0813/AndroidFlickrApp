@@ -1,12 +1,13 @@
 package com.jakester.flicksapp.activities;
 
-import android.preference.PreferenceActivity;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 
-import cz.msebera.android.httpclient.Header;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,39 +15,54 @@ import com.jakester.flicksapp.R;
 import com.jakester.flicksapp.adapters.MoviesAdapter;
 import com.jakester.flicksapp.models.Movie;
 import com.jakester.flicksapp.models.ResultsResponse;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
+import com.jakester.flicksapp.network.RestClient;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    Gson gson;
+
     ListView mListView;
     MoviesAdapter mMovieAdapter;
 
+    Gson gson;
+    RestClient mClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mListView = (ListView) findViewById(R.id.lv_movies);
 
-        AsyncHttpClient client = new AsyncHttpClient();
+
+
         gson = new GsonBuilder().create();
-        RequestParams params = new RequestParams();
-        client.get("https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed", params, new TextHttpResponseHandler() {
+        mClient = RestClient.getInstance();
+        mClient.getClient().newCall(mClient.getRequestObject()).enqueue(new Callback() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+            public void onResponse(Call call, Response response) throws IOException {
+                 runThread((ArrayList<Movie>) gson.fromJson(response.body().string(), ResultsResponse.class).getMovies());
 
-                ResultsResponse response = gson.fromJson(responseString, ResultsResponse.class);
-                mMovieAdapter = new MoviesAdapter(MainActivity.this, (ArrayList<Movie>) response.getMovies());
-                mListView = (ListView) findViewById(R.id.lv_movies);
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+
+        });
+
+    }
+
+    private void runThread(final ArrayList<Movie> pList){
+        runOnUiThread (new Thread(new Runnable() {
+            public void run() {
+                mMovieAdapter = new MoviesAdapter(MainActivity.this, pList);
                 mListView.setAdapter(mMovieAdapter);
             }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            }
-        });
+        }));
     }
+
 }
