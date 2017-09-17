@@ -16,6 +16,9 @@ public class Movie {
     @SerializedName("poster_path")
     String mUrl;
 
+    @SerializedName("backdrop_path")
+    String mBackdropUrl;
+
     public String getTitle(){
         return mTitle;
     }
@@ -26,5 +29,9 @@ public class Movie {
 
     public String getPosterPath(){
         return "http://image.tmdb.org/t/p/w185/" + mUrl;
+    }
+
+    public String getBackdropPath(){
+        return "http://image.tmdb.org/t/p/w185/" + mBackdropUrl;
     }
 }
