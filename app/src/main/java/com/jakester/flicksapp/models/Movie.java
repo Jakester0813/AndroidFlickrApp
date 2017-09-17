@@ -32,6 +32,6 @@ public class Movie {
     }
 
     public String getBackdropPath(){
-        return "http://image.tmdb.org/t/p/w185/" + mBackdropUrl;
+        return "http://image.tmdb.org/t/p/w500/" + mBackdropUrl;
     }
 }

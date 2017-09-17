@@ -63,10 +63,12 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             viewHolder = (MovieViewHolder) convertView.getTag();
         }
         if(mPortrait) {
-            Picasso.with(parent.getContext()).load(movie.getPosterPath()).fit().centerCrop().into(viewHolder.mImage);
+            Picasso.with(parent.getContext()).load(movie.getPosterPath()).fit()
+                    .centerCrop().placeholder(R.drawable.placeholder_movie_image).into(viewHolder.mImage);
         }
         else{
-            Picasso.with(parent.getContext()).load(movie.getBackdropPath()).fit().centerCrop().into(viewHolder.mImage);
+            Picasso.with(parent.getContext()).load(movie.getBackdropPath()).fit()
+                    .centerCrop().placeholder(R.drawable.placeholder_movie_image_land).into(viewHolder.mImage);
         }
 
         viewHolder.mTitle.setText(mMovies.get(position).getTitle());
