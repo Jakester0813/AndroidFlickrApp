@@ -37,8 +37,8 @@ The following **additional** features are implemented:
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
-
 Portrait Mode:
+
 <img src='https://i.imgur.com/3je72iW.gif' title='Video Walkthrough Portrait Mode' width='' alt='Video Walkthrough Portrait Mode' />
 
 Landscape Mode:
