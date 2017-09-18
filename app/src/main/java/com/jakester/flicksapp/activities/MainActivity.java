@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -24,20 +26,19 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    Toolbar mToolbar;
-    ListView mListView;
-    MoviesAdapter mMovieAdapter;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.lv_movies) ListView mListView;
 
+    MoviesAdapter mMovieAdapter;
     Gson gson;
     RestClient mClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         mToolbar.setTitle("Now Playing near you");
         setSupportActionBar(mToolbar);
-        mListView = (ListView) findViewById(R.id.lv_movies);
 
 
 

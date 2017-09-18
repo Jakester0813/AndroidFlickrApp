@@ -19,6 +19,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Jake on 9/15/2017.
  */
@@ -28,10 +31,14 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
     ArrayList<Movie> mMovies;
     boolean mPortrait;
 
-    private static class MovieViewHolder {
-        TextView mTitle;
-        TextView mDescription;
-        ImageView mImage;
+    static class MovieViewHolder {
+        @BindView(R.id.tv_movie_title) TextView mTitle;
+        @BindView(R.id.tv_movie_desc) TextView mDescription;
+        @BindView(R.id.iv_movie_poster)ImageView mImage;
+
+        public MovieViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 
     public MoviesAdapter(@NonNull Context context, ArrayList<Movie> pMovies) {
@@ -56,12 +63,8 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         Movie movie = getItem(position);
         MovieViewHolder viewHolder;
         if (convertView == null) {
-            viewHolder = new MovieViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.movie_row, parent, false);
-            viewHolder.mTitle = (TextView) convertView.findViewById(R.id.tv_movie_title);
-            viewHolder.mDescription = (TextView) convertView.findViewById(R.id.tv_movie_desc);
-            viewHolder.mImage = (ImageView) convertView.findViewById(R.id.iv_movie_poster);
-            //Cache the viewHolder object inside the fresh view
+            viewHolder = new MovieViewHolder(convertView);
             convertView.setTag(viewHolder);
 
         } else {
