@@ -57,7 +57,7 @@ RecyclerView and ListView. I wanted to practice ListView more to master ListView
 
 - [OkHttp](http://square.github.io/okhttp/) - Simple asynchronous HTTP requests with JSON parsing
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
-- [Butterknife annotation library](http://jakewharton.github.io/butterknife/) - Simple asynchronous HTTP requests with JSON parsing
+- [Butterknife annotation library](http://jakewharton.github.io/butterknife/) - Help bind views to their view ids to help reduce number of lines in code
 
 ## License
 
