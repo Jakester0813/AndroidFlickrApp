@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jakester.flicksapp.R;
 import com.jakester.flicksapp.models.Movie;
 import com.squareup.picasso.Picasso;
@@ -71,11 +72,11 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             viewHolder = (MovieViewHolder) convertView.getTag();
         }
         if(mPortrait) {
-            Picasso.with(parent.getContext()).load(movie.getPosterPath()).fit()
+            Glide.with(parent.getContext()).load(movie.getPosterPath())
                     .centerCrop().placeholder(R.drawable.placeholder_movie_image).into(viewHolder.mImage);
         }
         else{
-            Picasso.with(parent.getContext()).load(movie.getBackdropPath()).fit()
+            Glide.with(parent.getContext()).load(movie.getBackdropPath())
                     .centerCrop().placeholder(R.drawable.placeholder_movie_image_land).into(viewHolder.mImage);
         }
 
