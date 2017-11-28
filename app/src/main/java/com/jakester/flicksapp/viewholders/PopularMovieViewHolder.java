@@ -26,11 +26,11 @@ public class PopularMovieViewHolder extends RecyclerView.ViewHolder implements V
 
     public void bind(Movie movie, boolean portrait){
         if(portrait){
-            Glide.with(mContext).load(movie.getBackdropPath()).centerCrop()
+            Glide.with(mContext).load(movie.getBackdropPath()).fitCenter()
                     .placeholder(R.drawable.placeholder_movie_image).into(mMoviePoster);
         }
         else{
-            Glide.with(mContext).load(movie.getPopularBackdropPath()).centerCrop()
+            Glide.with(mContext).load(movie.getPopularBackdropPath()).fitCenter()
                     .placeholder(R.drawable.placeholder_movie_image).into(mMoviePoster);
         }
 
