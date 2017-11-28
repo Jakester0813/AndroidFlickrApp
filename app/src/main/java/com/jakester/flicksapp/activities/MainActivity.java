@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakester.flicksapp.R;
 import com.jakester.flicksapp.adapters.MoviesAdapter;
-import com.jakester.flicksapp.fragment.MovieDetailDialog;
 import com.jakester.flicksapp.interfaces.MovieTouchCallback;
 import com.jakester.flicksapp.models.Movie;
 import com.jakester.flicksapp.models.ResultsResponse;
