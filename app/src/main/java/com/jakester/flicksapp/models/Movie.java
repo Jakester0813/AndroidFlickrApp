@@ -7,6 +7,9 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Movie {
+    @SerializedName("id")
+    int mId;
+
     @SerializedName("title")
     String mTitle;
 
@@ -24,6 +27,13 @@ public class Movie {
 
     @SerializedName("popularity")
     Double mPopularity;
+
+    @SerializedName("release_date")
+    String mReleaseDate;
+
+    public int getId(){
+        return mId;
+    }
 
     public String getTitle(){
         return mTitle;
@@ -48,4 +58,6 @@ public class Movie {
     public Double getVote() { return mVote; }
 
     public Double getPopularity() { return mPopularity; }
+
+    public String getReleaseDate() { return mReleaseDate; }
 }

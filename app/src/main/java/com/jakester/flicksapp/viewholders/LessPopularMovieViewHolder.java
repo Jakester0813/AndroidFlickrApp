@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jakester.flicksapp.R;
 import com.jakester.flicksapp.activities.MovieDetailActivity;
+import com.jakester.flicksapp.interfaces.MovieTouchCallback;
 import com.jakester.flicksapp.models.Movie;
 
 /**
@@ -22,13 +23,15 @@ public class LessPopularMovieViewHolder extends RecyclerView.ViewHolder implemen
     TextView mTitle, mOverview;
     Context mContext;
     Movie mMovie;
+    MovieTouchCallback mCallback;
 
-    public LessPopularMovieViewHolder(View itemView, Context context) {
+    public LessPopularMovieViewHolder(View itemView, Context context, MovieTouchCallback callback) {
         super(itemView);
         this.mMoviePoster = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
         this.mTitle = (TextView) itemView.findViewById(R.id.tv_movie_title);
         this.mOverview = (TextView) itemView.findViewById(R.id.tv_movie_desc);
         this.mContext = context;
+        this.mCallback = callback;
     }
 
     public void bind(Movie movie, boolean portrait){
@@ -48,8 +51,9 @@ public class LessPopularMovieViewHolder extends RecyclerView.ViewHolder implemen
 
     @Override
     public void onClick(View view) {
-        Intent i = new Intent(mContext, MovieDetailActivity.class);
-
-
+        //Intent i = new Intent(mContext, MovieDetailActivity.class);
+        //i.putExtra("id", mMovie.getId());
+        //mContext.startActivity(i);
+        mCallback.onClick(mMovie, false);
     }
 }

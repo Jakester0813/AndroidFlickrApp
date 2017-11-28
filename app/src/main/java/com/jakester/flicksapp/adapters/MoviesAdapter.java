@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jakester.flicksapp.R;
+import com.jakester.flicksapp.interfaces.MovieTouchCallback;
 import com.jakester.flicksapp.models.Movie;
 import com.jakester.flicksapp.viewholders.LessPopularMovieViewHolder;
 import com.jakester.flicksapp.viewholders.PopularMovieViewHolder;
@@ -26,9 +27,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     boolean mPortrait;
     private final int MOVIE = 0, POPULAR_MOVIE = 1;
     Context mContext;
+    MovieTouchCallback mCallback;
 
 
-    public MoviesAdapter(@NonNull Context context, ArrayList<Movie> pMovies) {
+    public MoviesAdapter(@NonNull Context context, ArrayList<Movie> pMovies, MovieTouchCallback callback) {
         mMovies = pMovies;
         mContext = context;
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
@@ -37,6 +39,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         else{
             mPortrait = false;
         }
+        mCallback = callback;
     }
 
     @Override
@@ -46,11 +49,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (viewType) {
             case MOVIE:
                 View v1 = inflater.inflate(R.layout.movie_row, viewGroup, false);
-                viewHolder = new LessPopularMovieViewHolder(v1, mContext);
+                viewHolder = new LessPopularMovieViewHolder(v1, mContext, mCallback);
                 break;
             case POPULAR_MOVIE:
                 View v2 = inflater.inflate(R.layout.popular_movie_row, viewGroup, false);
-                viewHolder = new PopularMovieViewHolder(v2, mContext);
+                viewHolder = new PopularMovieViewHolder(v2, mContext, mCallback);
                 break;
         }
         return viewHolder;

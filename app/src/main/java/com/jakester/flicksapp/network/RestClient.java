@@ -28,9 +28,23 @@ public class RestClient {
         return mClient;
     }
 
-    public Request getRequestObject(){
+    public Request getMoviesRequestObject(){
 
         Request mRequest = new Request.Builder().url(FlicksConstants.MOVIES_URL).build();
+        return mRequest;
+    }
+
+    public Request getMovieDetailsRequestObject(int id){
+        StringBuilder sb = new StringBuilder(FlicksConstants.MOVIE_BASE_URL)
+                .append(id).append(FlicksConstants.MOVIE_API_KEY_QUERY);
+        Request mRequest = new Request.Builder().url(sb.toString()).build();
+        return mRequest;
+    }
+
+    public Request getMovieTrailerRequestObject(int id){
+        StringBuilder sb = new StringBuilder(FlicksConstants.MOVIE_BASE_URL)
+                .append(id).append(FlicksConstants.MOVIE_VIDEOS_API_KEY_QUERY_URL);
+        Request mRequest = new Request.Builder().url(sb.toString()).build();
         return mRequest;
     }
 
