@@ -32,6 +32,7 @@ public class LessPopularMovieViewHolder extends RecyclerView.ViewHolder implemen
         this.mOverview = (TextView) itemView.findViewById(R.id.tv_movie_desc);
         this.mContext = context;
         this.mCallback = callback;
+        itemView.setOnClickListener(this);
     }
 
     public void bind(Movie movie, boolean portrait){

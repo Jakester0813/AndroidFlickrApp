@@ -2,10 +2,13 @@ package com.jakester.flicksapp.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 /**
  * Created by Jake on 9/15/2017.
  */
 
+@Parcel(analyze={Movie.class})
 public class Movie {
     @SerializedName("id")
     int mId;
