@@ -4,47 +4,33 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.jakester.flicksapp.R;
 import com.jakester.flicksapp.models.Movie;
-import com.squareup.picasso.Picasso;
+import com.jakester.flicksapp.viewholders.LessPopularMovieViewHolder;
+import com.jakester.flicksapp.viewholders.PopularMovieViewHolder;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Jake on 9/15/2017.
  */
 
-public class MoviesAdapter extends ArrayAdapter<Movie> {
+public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ArrayList<Movie> mMovies;
     boolean mPortrait;
+    private final int MOVIE = 0, POPULAR_MOVIE = 1;
+    Context mContext;
 
-    static class MovieViewHolder {
-        @BindView(R.id.tv_movie_title) TextView mTitle;
-        @BindView(R.id.tv_movie_desc) TextView mDescription;
-        @BindView(R.id.iv_movie_poster)ImageView mImage;
-
-        public MovieViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
 
     public MoviesAdapter(@NonNull Context context, ArrayList<Movie> pMovies) {
-        super(context, 0, pMovies);
         mMovies = pMovies;
+        mContext = context;
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             mPortrait = true;
         }
@@ -53,36 +39,56 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         }
     }
 
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        RecyclerView.ViewHolder viewHolder = null;
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        switch (viewType) {
+            case MOVIE:
+                View v1 = inflater.inflate(R.layout.movie_row, viewGroup, false);
+                viewHolder = new LessPopularMovieViewHolder(v1, mContext);
+                break;
+            case POPULAR_MOVIE:
+                View v2 = inflater.inflate(R.layout.popular_movie_row, viewGroup, false);
+                viewHolder = new PopularMovieViewHolder(v2, mContext);
+                break;
+        }
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Movie movie = mMovies.get(position);
+        switch (holder.getItemViewType()) {
+            case MOVIE:
+                LessPopularMovieViewHolder viewHolder = (LessPopularMovieViewHolder) holder;
+                viewHolder.bind(movie, mPortrait);
+                break;
+            case POPULAR_MOVIE:
+                PopularMovieViewHolder popViewHolder = (PopularMovieViewHolder) holder;
+                popViewHolder.bind(movie, mPortrait);
+                break;
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mMovies.size();
+    }
+
     public void setList(ArrayList<Movie> pMovies){
         mMovies.clear();
         mMovies.addAll(pMovies);
         this.notifyDataSetChanged();
     }
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
-        // Lookup view for data population
-        Movie movie = getItem(position);
-        MovieViewHolder viewHolder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.movie_row, parent, false);
-            viewHolder = new MovieViewHolder(convertView);
-            convertView.setTag(viewHolder);
-
+    public int getItemViewType(int position) {
+        mMovies.get(position).getPopularity();
+        if (mMovies.get(position).getPopularity() >= 650.0) {
+            return POPULAR_MOVIE;
         } else {
-            viewHolder = (MovieViewHolder) convertView.getTag();
+            return MOVIE;
         }
-        if(mPortrait) {
-            Glide.with(parent.getContext()).load(movie.getPosterPath())
-                    .centerCrop().placeholder(R.drawable.placeholder_movie_image).into(viewHolder.mImage);
-        }
-        else{
-            Glide.with(parent.getContext()).load(movie.getBackdropPath())
-                    .centerCrop().placeholder(R.drawable.placeholder_movie_image_land).into(viewHolder.mImage);
-        }
-
-        viewHolder.mTitle.setText(mMovies.get(position).getTitle());
-        viewHolder.mDescription.setText(mMovies.get(position).getOverview());
-        return convertView;
-
     }
 }

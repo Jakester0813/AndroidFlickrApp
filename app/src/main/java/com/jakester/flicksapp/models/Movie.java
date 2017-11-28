@@ -19,6 +19,12 @@ public class Movie {
     @SerializedName("backdrop_path")
     String mBackdropUrl;
 
+    @SerializedName("vote_average")
+    Double mVote;
+
+    @SerializedName("popularity")
+    Double mPopularity;
+
     public String getTitle(){
         return mTitle;
     }
@@ -34,4 +40,12 @@ public class Movie {
     public String getBackdropPath(){
         return "http://image.tmdb.org/t/p/w500/" + mBackdropUrl;
     }
+
+    public String getPopularBackdropPath(){
+        return "http://image.tmdb.org/t/p/w780/" + mBackdropUrl;
+    }
+
+    public Double getVote() { return mVote; }
+
+    public Double getPopularity() { return mPopularity; }
 }

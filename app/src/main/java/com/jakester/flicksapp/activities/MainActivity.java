@@ -3,11 +3,9 @@ package com.jakester.flicksapp.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.ListView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -26,8 +24,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.lv_movies) ListView mListView;
+    Toolbar mToolbar;
+    RecyclerView mMoviesRecycler;
 
     MoviesAdapter mMovieAdapter;
     Gson gson;
@@ -36,10 +34,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mMoviesRecycler = (RecyclerView) findViewById(R.id.rv_movies);
         mToolbar.setTitle("Now Playing near you");
         setSupportActionBar(mToolbar);
 
+        mMoviesRecycler.setLayoutManager(new LinearLayoutManager(this));
 
 
         gson = new GsonBuilder().create();
@@ -64,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private void runThread(final ArrayList<Movie> pList){
         runOnUiThread (new Thread(new Runnable() {
             public void run() {
-                mMovieAdapter = new MoviesAdapter(MainActivity.this, pList);
-                mListView.setAdapter(mMovieAdapter);
+                mMoviesRecycler.setAdapter(new MoviesAdapter(MainActivity.this, pList));
             }
         }));
     }
