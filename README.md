@@ -33,8 +33,8 @@ The following **bonus** features are implemented:
 The following **additional** features are implemented:
 
 * [x] Improve the user interface through styling and coloring
-* [D] RxJava
-* [D] Retrofit
+* [x] RxJava
+* [x] Retrofit
 * [x] Glide
 * [x] RecyclerView
 

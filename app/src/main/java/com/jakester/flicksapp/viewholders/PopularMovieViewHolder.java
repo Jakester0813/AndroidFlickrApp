@@ -47,9 +47,6 @@ public class PopularMovieViewHolder extends RecyclerView.ViewHolder implements V
 
     @Override
     public void onClick(View view) {
-        //Intent i = new Intent(mContext, TrailerActivity.class);
-        //i.putExtra("id", mMovie.getId());
-        //mContext.startActivity(i);
-        mCallback.onClick(mMovie, true);
+        mCallback.onClick(mMovie);
     }
 }

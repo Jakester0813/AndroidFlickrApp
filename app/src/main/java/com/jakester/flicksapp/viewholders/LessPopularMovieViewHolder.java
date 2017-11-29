@@ -52,9 +52,6 @@ public class LessPopularMovieViewHolder extends RecyclerView.ViewHolder implemen
 
     @Override
     public void onClick(View view) {
-        //Intent i = new Intent(mContext, MovieDetailActivity.class);
-        //i.putExtra("id", mMovie.getId());
-        //mContext.startActivity(i);
-        mCallback.onClick(mMovie, false);
+        mCallback.onClick(mMovie);
     }
 }

@@ -79,12 +79,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return mMovies.size();
     }
 
-    public void setList(ArrayList<Movie> pMovies){
-        mMovies.clear();
-        mMovies.addAll(pMovies);
-        this.notifyDataSetChanged();
-    }
-
     @Override
     public int getItemViewType(int position) {
         mMovies.get(position).getPopularity();

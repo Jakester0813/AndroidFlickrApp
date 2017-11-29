@@ -9,5 +9,5 @@ import com.jakester.flicksapp.models.Movie;
  */
 
 public interface MovieTouchCallback {
-    void onClick(Movie movie, boolean popular);
+    void onClick(Movie movie);
 }

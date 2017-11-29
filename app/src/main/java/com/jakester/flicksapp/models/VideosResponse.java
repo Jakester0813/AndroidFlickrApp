@@ -10,17 +10,15 @@ import java.util.List;
  */
 
 public class VideosResponse {
-    @SerializedName("id")
-    int id;
 
     @SerializedName("results")
-    List<Video> videos;
+    ArrayList<Video> videos;
 
     public VideosResponse(){
         videos = new ArrayList<Video>();
     }
 
-    public List<Video> getVideos(){
+    public ArrayList<Video> getVideos(){
         return videos;
     }
 }

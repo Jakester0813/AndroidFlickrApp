@@ -11,13 +11,13 @@ import java.util.List;
 
 public class ResultsResponse {
     @SerializedName("results")
-    List<Movie> movies;
+    ArrayList<Movie> movies;
 
     public ResultsResponse(){
         movies = new ArrayList<Movie>();
     }
 
-    public List<Movie> getMovies(){
+    public ArrayList<Movie> getMovies(){
         return movies;
     }
 }

@@ -25,9 +25,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class TrailerActivity extends YouTubeBaseActivity {
-    RestClient mClient;
     String id;
-    Gson gson;
     YouTubePlayerView youTubePlayerView;
 
     @Override

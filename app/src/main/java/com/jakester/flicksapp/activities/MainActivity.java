@@ -12,17 +12,23 @@ import android.support.v7.widget.Toolbar;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import rx.Observer;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakester.flicksapp.R;
 import com.jakester.flicksapp.adapters.MoviesAdapter;
+import com.jakester.flicksapp.interfaces.FlicksService;
 import com.jakester.flicksapp.interfaces.MovieTouchCallback;
 import com.jakester.flicksapp.models.Movie;
 import com.jakester.flicksapp.models.ResultsResponse;
 import com.jakester.flicksapp.models.Video;
 import com.jakester.flicksapp.models.VideosResponse;
 import com.jakester.flicksapp.network.RestClient;
+import com.jakester.flicksapp.util.APIUtility;
 
 import org.parceler.Parcels;
 
@@ -34,10 +40,6 @@ public class MainActivity extends AppCompatActivity implements MovieTouchCallbac
 
     Toolbar mToolbar;
     RecyclerView mMoviesRecycler;
-
-    MoviesAdapter mMovieAdapter;
-    Gson gson;
-    RestClient mClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,54 +51,65 @@ public class MainActivity extends AppCompatActivity implements MovieTouchCallbac
 
         mMoviesRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-
-        gson = new GsonBuilder().create();
-        mClient = RestClient.getInstance();
-        mClient.getClient().newCall(mClient.getMoviesRequestObject()).enqueue(new Callback() {
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                 runThread((ArrayList<Movie>) gson.fromJson(response.body().string(), ResultsResponse.class).getMovies());
-
-            }
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-
-        });
+        getPlayingMovies();
 
     }
 
-    private void runThread(final ArrayList<Movie> pList){
-        runOnUiThread (new Thread(new Runnable() {
-            public void run() {
-                mMoviesRecycler.setAdapter(new MoviesAdapter(getApplicationContext(), pList, MainActivity.this));
-            }
-        }));
+    private void getPlayingMovies(){
+        FlicksService service = APIUtility.getMovieService();
+        service.getMovies().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ResultsResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResultsResponse resultsResponse) {
+                        mMoviesRecycler.setAdapter(new MoviesAdapter(getApplicationContext(),
+                                resultsResponse.getMovies(), MainActivity.this));
+                    }
+                });
+
     }
+
+    private void getVideos(final Movie movie){
+        FlicksService service = APIUtility.getMovieService();
+        service.getVideos(movie.getId()).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<VideosResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(VideosResponse videosResponse) {
+                        showMovie(videosResponse.getVideos().get(0).getKey(), movie);
+                    }
+                });
+
+    }
+
 
     @Override
-    public void onClick(final Movie movie, final boolean popular) {
-        mClient.getClient().newCall(mClient.getMovieTrailerRequestObject(movie.getId())).enqueue(new Callback() {
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                ArrayList<Video> videos = (ArrayList<Video>) gson.fromJson(response.body().string(), VideosResponse.class).getVideos();
-                showMovie(videos.get(0).getKey(), popular, movie);
-            }
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-
-        });
+    public void onClick(final Movie movie) {
+        getVideos(movie);
     }
 
-    private void showMovie(String id, boolean popular, Movie movie){
-        if(popular){
+    private void showMovie(String id, Movie movie){
+        if(movie.getPopularity() >= 650.0){
             Intent i = new Intent(this, TrailerActivity.class);
             i.putExtra("id", id);
             startActivity(i);

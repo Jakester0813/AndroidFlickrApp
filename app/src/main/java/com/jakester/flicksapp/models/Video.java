@@ -16,12 +16,6 @@ public class Video {
     @SerializedName("key")
     String mKey;
 
-    @SerializedName("size")
-    int mSize;
-
-    @SerializedName("type")
-    String mType;
-
 
 
     public String getId(){
@@ -36,9 +30,4 @@ public class Video {
         return mKey;
     }
 
-    public int getSize(){
-        return mSize;
-    }
-
-    public String getType() { return mType; }
 }
